@@ -124,4 +124,8 @@ PUT http://localhost:5000/api/products/6ad99ae27354cc07e437ad42
 Content-Type: application/json
 
 {"subCategory": "chain"}
+### Black beads photo
+PUT https://jewelry-api-zjpa.onrender.com/api/products/6adc96b00aa6a8d68e5f1f09
+Content-Type: application/json
 
+{"image": "/images/blackbeads1.jpg", "oldPrice": 0}
