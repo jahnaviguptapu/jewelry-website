@@ -1,0 +1,127 @@
+### 1
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"CZ Silver Neck Set","price":1599,"oldPrice":1999,"badge":"SPECIAL","category":"silver-neck-sets","material":"Silver Polish","stock":5}
+
+### 2
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Nalla Pusalu Black Beads","price":899,"oldPrice":1199,"badge":"TRENDING","category":"black-beads","stock":10}
+
+### 3
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Traditional Gold Neck Set","price":2499,"oldPrice":3299,"badge":"BESTSELLER","category":"necklace-sets","stock":8}
+
+### 4
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Traditional Earrings","price":699,"oldPrice":999,"badge":"POPULAR","category":"earrings","stock":12}
+
+### 5
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Everyday Gold Chain","price":799,"oldPrice":1099,"badge":"LOVED","category":"chains","stock":9}
+
+### 6
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Elegant Gold Ring","price":599,"oldPrice":799,"badge":"DAILY WEAR","category":"rings","image":"/images/cat-rings.jpg","stock":15}
+### Delete duplicate
+DELETE http://localhost:5000/api/products/DUPLICATE_ID_IKKADA
+### Delete duplicate
+DELETE http://localhost:5000/api/products/6ad986fd5980db37ea698712
+### Chain ki photo
+PUT http://localhost:5000/api/products/6ad987645980db37ea698717
+Content-Type: application/json
+
+{"image": "/images/cat-chains.jpg"}
+### Earrings ki photo
+PUT http://localhost:5000/api/products/6ad987525980db37ea698716
+Content-Type: application/json
+
+{"image": "/images/cat-earrings.jpg"}
+### Neck set ki photo
+PUT http://localhost:5000/api/products/6ad9872e5980db37ea698715
+Content-Type: application/json
+
+{"image": "/images/cat-necklace-sets.jpg"}
+### Black beads ki photo
+PUT http://localhost:5000/api/products/6ad987195980db37ea698714
+Content-Type: application/json
+
+{"image": "/images/cat-black-beads.jpg"}
+### Silver neck set ki photo
+PUT http://localhost:5000/api/products/6ad987005980db37ea698713
+Content-Type: application/json
+
+{"image": "/images/cat-silver-neck-sets.jpg"}
+### Bangles
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Traditional Gold Bangles Set","price":999,"oldPrice":1399,"badge":"NEW","category":"bangles","image":"/images/cat-bangles.jpg","stock":10}
+### Bracelets
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{"name":"Elegant Gold Bracelet","price":749,"oldPrice":999,"badge":"TRENDING","category":"bracelets","image":"/images/cat-bracelets.jpg","stock":8}
+### tryOn clear
+PUT http://localhost:5000/api/products/6ad987005980db37ea698713
+Content-Type: application/json
+
+{"tryOn": ""}
+### Neck set -> haram
+PUT http://localhost:5000/api/products/6ad9872e5980db37ea698715
+Content-Type: application/json
+
+{"subCategory": "haram"}
+
+### Earrings -> jhumka
+PUT http://localhost:5000/api/products/6ad987525980db37ea698716
+Content-Type: application/json
+
+{"subCategory": "jhumka"}
+
+### Silver neck set -> cz-set
+PUT http://localhost:5000/api/products/6ad987005980db37ea698713
+Content-Type: application/json
+
+{"subCategory": "cz-set"}
+
+### Black beads -> short
+PUT http://localhost:5000/api/products/6ad987195980db37ea698714
+Content-Type: application/json
+
+{"subCategory": "short"}
+
+### Chain -> short
+PUT http://localhost:5000/api/products/6ad987645980db37ea698717
+Content-Type: application/json
+
+{"subCategory": "short"}
+
+### Ring -> daily
+PUT http://localhost:5000/api/products/6ad987735980db37ea698718
+Content-Type: application/json
+
+{"subCategory": "daily"}
+
+### Bangles -> set
+PUT http://localhost:5000/api/products/6ad99ae77354cc07e437ad43
+Content-Type: application/json
+
+{"subCategory": "set"}
+
+### Bracelet -> chain
+PUT http://localhost:5000/api/products/6ad99ae27354cc07e437ad42
+Content-Type: application/json
+
+{"subCategory": "chain"}
+
