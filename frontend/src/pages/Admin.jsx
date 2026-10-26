@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
 import { imgUrl } from "../components/ProductCard";
 import { API } from "../config";
@@ -18,6 +19,10 @@ const emptyForm = {
 };
 
 function Admin() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adminToken");
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
@@ -27,8 +32,26 @@ function Admin() {
     axios.get(`${API}/api/products`).then((r) => setProducts(r.data));
 
   useEffect(() => {
+    if (!token) {
+      navigate("/admin-login");
+      return;
+    }
     load();
-  }, []);
+  }, [token, navigate]);
+
+  const logout = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/admin-login");
+  };
+
+  const handleAuthError = (err) => {
+    if (err.response?.status === 401 || err.response?.status === 403) {
+      localStorage.removeItem("adminToken");
+      navigate("/admin-login");
+      return true;
+    }
+    return false;
+  };
 
   const subs = categories.find((c) => c.value === form.category)?.subs || [];
 
@@ -44,10 +67,11 @@ function Admin() {
     try {
       const data = new FormData();
       data.append("image", file);
-      const res = await axios.post(`${API}/api/upload`, data);
+      const res = await axios.post(`${API}/api/upload`, data, auth);
       setForm((f) => ({ ...f, image: res.data.url }));
       setMsg("Photo uploaded ✅");
-    } catch {
+    } catch (err) {
+      if (handleAuthError(err)) return;
       setMsg("Photo upload failed. Backend run avutundo check chey.");
     }
   };
@@ -65,16 +89,17 @@ function Admin() {
     };
     try {
       if (editId) {
-        await axios.put(`${API}/api/products/${editId}`, body);
+        await axios.put(`${API}/api/products/${editId}`, body, auth);
         setMsg("Product updated ✅");
       } else {
-        await axios.post(`${API}/api/products`, body);
+        await axios.post(`${API}/api/products`, body, auth);
         setMsg("Product added ✅");
       }
       setForm(emptyForm);
       setEditId(null);
       load();
     } catch (err) {
+      if (handleAuthError(err)) return;
       setMsg(err.response?.data?.message || "Error");
     }
   };
@@ -103,15 +128,21 @@ function Admin() {
 
   const remove = async (id) => {
     if (!window.confirm("Delete this product?")) return;
-    await axios.delete(`${API}/api/products/${id}`);
-    load();
+    try {
+      await axios.delete(`${API}/api/products/${id}`, auth);
+      load();
+    } catch (err) {
+      if (handleAuthError(err)) return;
+      setMsg("Delete failed");
+    }
   };
 
   return (
     <div className="wrap" style={{ padding: "30px 24px" }}>
-      <h2 className="serif" style={{ fontSize: 34, marginBottom: 16 }}>
-        Admin Panel
-      </h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <h2 className="serif" style={{ fontSize: 34 }}>Admin Panel</h2>
+        <button className="outline-btn" onClick={logout}>Logout</button>
+      </div>
 
       <div className="admin-form">
         <h3 className="serif" style={{ fontSize: 24 }}>

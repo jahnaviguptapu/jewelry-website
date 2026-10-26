@@ -27,6 +27,11 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
+  // prathi category nundi okka product matrame (latest)
+  const featured = categories
+    .map((c) => products.find((p) => p.category === c.value))
+    .filter(Boolean);
+
   return (
     <>
       <section className="hero">
@@ -90,12 +95,21 @@ function Home() {
             </button>
           </div>
 
-          {products.length === 0 ? (
+          {featured.length === 0 ? (
             <p className="empty">No products found.</p>
           ) : (
             <div className="grid">
-              {products.map((p) => (
-                <ProductCard key={p._id} product={p} />
+              {featured.map((p) => (
+                <div
+                  key={p._id}
+                  className="collection-card"
+                  onClick={() => navigate(`/shop?category=${p.category}`)}
+                >
+                  <ProductCard product={p} />
+                  <span className="collection-tag">
+                    View all {categories.find((c) => c.value === p.category)?.label} →
+                  </span>
+                </div>
               ))}
             </div>
           )}

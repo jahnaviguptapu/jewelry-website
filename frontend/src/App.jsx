@@ -8,7 +8,7 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import ProductDetails from "./pages/ProductDetails";
 import Admin from "./pages/Admin";
-
+import AdminLogin from "./pages/AdminLogin";
 function App() {
   return (
     <>
@@ -21,6 +21,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
       <Footer />
     </>
