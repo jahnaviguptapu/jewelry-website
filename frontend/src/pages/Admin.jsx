@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
 import { imgUrl } from "../components/ProductCard";
 import { API } from "../config";
@@ -139,9 +139,12 @@ function Admin() {
 
   return (
     <div className="wrap" style={{ padding: "30px 24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
         <h2 className="serif" style={{ fontSize: 34 }}>Admin Panel</h2>
-        <button className="outline-btn" onClick={logout}>Logout</button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <Link to="/admin-orders" className="outline-btn">Orders</Link>
+          <button className="outline-btn" onClick={logout}>Logout</button>
+        </div>
       </div>
 
       <div className="admin-form">

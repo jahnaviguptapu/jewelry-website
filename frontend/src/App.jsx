@@ -10,6 +10,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import AdminOrders from "./pages/AdminOrders";
+
 function App() {
   return (
     <>
@@ -23,7 +24,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Link to="/admin-orders" className="outline-btn">Orders</Link>
+        <Route path="/admin-orders" element={<AdminOrders />} />
       </Routes>
       <Footer />
     </>
