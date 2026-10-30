@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { API } from "../config";
+import { useState } from "react";
+import BuyNow from "./BuyNow";
 
 const names = {
   "silver-neck-sets": "Silver Neck Sets",
@@ -17,6 +19,7 @@ export const imgUrl = (image) =>
   image && image.startsWith("/uploads") ? `${API}${image}` : image;
 
 function ProductCard({ product }) {
+  const [buying, setBuying] = useState(false);
   const { addToCart } = useCart();
 
   return (
@@ -44,6 +47,10 @@ function ProductCard({ product }) {
         <button className="add" onClick={() => addToCart(product)}>
           ADD TO BAG
         </button>
+        <button className="add buy" onClick={() => setBuying(true)}>
+          BUY NOW
+        </button>
+        {buying && <BuyNow product={product} onClose={() => setBuying(false)} />}
       </div>
     </div>
   );
