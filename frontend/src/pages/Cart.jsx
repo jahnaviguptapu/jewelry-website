@@ -38,18 +38,19 @@ function Cart() {
   };
 
   if (done) {
-    return (
-      <div className="wrap" style={{ padding: "40px 24px", minHeight: "50vh" }}>
-        <h2 className="serif" style={{ fontSize: 34 }}>Thank you! 💍</h2>
-        <p style={{ margin: "16px 0" }}>
-          Mee order vachindi. Memu tvaraga contact chestam.
-        </p>
-        <Link to="/shop" className="btn" style={{ display: "inline-block" }}>
-          CONTINUE SHOPPING
-        </Link>
+  return (
+    <div className="wrap" style={{ padding: "40px 24px", minHeight: "50vh" }}>
+      <h2 className="serif" style={{ fontSize: 34 }}>Thank you! 💍</h2>
+      <p style={{ margin: "16px 0" }}>
+        Your order has been placed successfully. We will contact you shortly to confirm it.
+      </p>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        <Link to="/shop" className="btn" style={{ display: "inline-block" }}>KEEP SHOPPING</Link>
+        <Link to="/track" className="outline-btn">Track order</Link>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (cart.length === 0) {
     return (

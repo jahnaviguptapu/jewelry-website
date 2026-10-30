@@ -43,6 +43,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Customer: phone number tho order status chudadam (address etc. ivvamu)
+router.get("/track", async (req, res) => {
+  try {
+    const phone = String(req.query.phone || "").trim();
+    if (phone.length < 6) {
+      return res.status(400).json({ message: "Enter a valid phone number" });
+    }
+    const orders = await Order.find({ phone }).sort({ createdAt: -1 }).limit(10);
+    res.json(
+      orders.map((o) => ({
+        id: o._id,
+        status: o.status,
+        total: o.total,
+        createdAt: o.createdAt,
+        items: o.items.map((i) => ({ name: i.name, qty: i.qty })),
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Admin: anni orders
 router.get("/", adminOnly, async (req, res) => {
   try {

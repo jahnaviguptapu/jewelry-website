@@ -43,6 +43,7 @@ function Navbar() {
             <NavLink to="/shop">Shop</NavLink>
             <NavLink to="/our-story">Our Story</NavLink>
             <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/track">Track Order</NavLink>
           </nav>
 
           <input className="search" placeholder="Search jewellery..." />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { API } from "../config";
 
@@ -12,7 +13,7 @@ function BuyNow({ product, onClose }) {
 
   const submit = async () => {
     if (!form.customerName.trim() || !form.phone.trim() || !form.address.trim()) {
-      setMsg("Name, phone and address anni kavali");
+      setMsg("Please fill in your name, phone number and address.");
       return;
     }
     setBusy(true);
@@ -25,7 +26,7 @@ function BuyNow({ product, onClose }) {
       });
       setDone(true);
     } catch (err) {
-      setMsg(err.response?.data?.message || "Order failed. Malli try chey.");
+      setMsg(err.response?.data?.message || "Order failed. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -38,16 +39,18 @@ function BuyNow({ product, onClose }) {
           <>
             <h3 className="serif" style={{ fontSize: 26 }}>Thank you! 💍</h3>
             <p style={{ margin: "12px 0" }}>
-              Mee order vachindi. Memu tvaraga phone lo contact chestam.
+              Your order has been placed successfully. We will contact you
+              shortly to confirm it.
             </p>
-            <button className="btn" onClick={onClose}>CLOSE</button>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button className="btn" onClick={onClose}>KEEP SHOPPING</button>
+              <Link to="/track" className="outline-btn" onClick={onClose}>Track order</Link>
+            </div>
           </>
         ) : (
           <>
             <h3 className="serif" style={{ fontSize: 24 }}>Buy now</h3>
-            <p style={{ margin: "6px 0" }}>
-              {product.name} · ₹{product.price}
-            </p>
+            <p style={{ margin: "6px 0" }}>{product.name} · ₹{product.price}</p>
             <div className="admin-form" style={{ padding: 0 }}>
               <input name="customerName" placeholder="Your name" value={form.customerName} onChange={change} />
               <input name="phone" placeholder="Phone number" value={form.phone} onChange={change} />
