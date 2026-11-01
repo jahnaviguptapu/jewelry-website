@@ -28,8 +28,20 @@ function Admin() {
   const [editId, setEditId] = useState(null);
   const [msg, setMsg] = useState("");
 
+  const handleAuthError = (err) => {
+    if (err.response?.status === 401 || err.response?.status === 403) {
+      localStorage.removeItem("adminToken");
+      navigate("/admin-login");
+      return true;
+    }
+    return false;
+  };
+
   const load = () =>
-    axios.get(`${API}/api/products`).then((r) => setProducts(r.data));
+    axios
+      .get(`${API}/api/products`, auth)
+      .then((r) => setProducts(r.data))
+      .catch((err) => handleAuthError(err));
 
   useEffect(() => {
     if (!token) {
@@ -42,15 +54,6 @@ function Admin() {
   const logout = () => {
     localStorage.removeItem("adminToken");
     navigate("/admin-login");
-  };
-
-  const handleAuthError = (err) => {
-    if (err.response?.status === 401 || err.response?.status === 403) {
-      localStorage.removeItem("adminToken");
-      navigate("/admin-login");
-      return true;
-    }
-    return false;
   };
 
   const subs = categories.find((c) => c.value === form.category)?.subs || [];
@@ -72,7 +75,7 @@ function Admin() {
       setMsg("Photo uploaded ✅");
     } catch (err) {
       if (handleAuthError(err)) return;
-      setMsg("Photo upload failed. Backend run avutundo check chey.");
+      setMsg("Photo upload failed. Please try again.");
     }
   };
 
@@ -141,8 +144,9 @@ function Admin() {
     <div className="wrap" style={{ padding: "30px 24px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
         <h2 className="serif" style={{ fontSize: 34 }}>Admin Panel</h2>
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Link to="/admin-orders" className="outline-btn">Orders</Link>
+          <Link to="/admin-users" className="outline-btn">Customers</Link>
           <button className="outline-btn" onClick={logout}>Logout</button>
         </div>
       </div>

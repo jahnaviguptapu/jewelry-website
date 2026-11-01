@@ -208,3 +208,5 @@ button { font-family: inherit; cursor: pointer; }
   .sub-menu { display: none !important; }
   .dropdown-menu a { padding: 6px 0; }
 }
+.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f8d9d4, #f1c3c0); padding: 16px; }
+.login-box { background: #fff; border-radius: 14px; padding: 30px; width: 100%; max-width: 380px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
