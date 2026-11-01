@@ -4,20 +4,41 @@ import { useNavigate } from "react-router-dom";
 import { API } from "../config";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [mode, setMode] = useState("login"); // login | register
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
 
-  const login = async () => {
+  const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const switchMode = (m) => {
+    setMode(m);
+    setMsg("");
+  };
+
+  const submit = async () => {
+    setMsg("");
+    if (mode === "register" && !form.name.trim()) {
+      setMsg("Please enter your name.");
+      return;
+    }
+    if (!form.email.trim() || !form.password) {
+      setMsg("Please enter your email and password.");
+      return;
+    }
+    setBusy(true);
     try {
-      const res = await axios.post(`${API}/api/auth/login`, { email, password });
+      const url = mode === "register" ? "register" : "login";
+      const res = await axios.post(`${API}/api/auth/${url}`, form);
       localStorage.removeItem("userToken");
       localStorage.removeItem("adminToken");
       localStorage.setItem(res.data.isAdmin ? "adminToken" : "userToken", res.data.token);
       navigate("/");
     } catch (err) {
-      setMsg(err.response?.data?.message || "Login failed. Please try again.");
+      setMsg(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -27,22 +48,54 @@ function Login() {
         <div className="logo" style={{ textAlign: "center", marginBottom: 18 }}>
           STRII<small>COLLECTIONS</small>
         </div>
-        <h2 className="serif" style={{ fontSize: 28, textAlign: "center" }}>Welcome</h2>
-        <p style={{ textAlign: "center", margin: "6px 0 16px", fontSize: 14 }}>
-          Please log in to view our collection.
+
+        <div className="auth-tabs">
+          <button className={mode === "login" ? "on" : ""} onClick={() => switchMode("login")}>
+            Log in
+          </button>
+          <button className={mode === "register" ? "on" : ""} onClick={() => switchMode("register")}>
+            Create account
+          </button>
+        </div>
+
+        <p style={{ textAlign: "center", margin: "12px 0 16px", fontSize: 14 }}>
+          {mode === "login"
+            ? "Welcome back! Log in to view our collection."
+            : "Create a free account to view our collection."}
         </p>
+
         <div className="admin-form" style={{ padding: 0 }}>
-          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          {mode === "register" && (
+            <input name="name" placeholder="Your name" value={form.name} onChange={change} />
+          )}
+          <input name="email" placeholder="Email" value={form.email} onChange={change} />
           <input
+            name="password"
             type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && login()}
+            placeholder={mode === "register" ? "Create a password (6+ characters)" : "Password"}
+            value={form.password}
+            onChange={change}
+            onKeyDown={(e) => e.key === "Enter" && submit()}
           />
-          <button className="btn" onClick={login}>LOGIN</button>
+          <button className="btn" onClick={submit} disabled={busy}>
+            {busy ? "PLEASE WAIT…" : mode === "login" ? "LOG IN" : "CREATE ACCOUNT"}
+          </button>
           {msg && <p style={{ color: "#b3261e" }}>{msg}</p>}
         </div>
+
+        <p style={{ textAlign: "center", marginTop: 14, fontSize: 13 }}>
+          {mode === "login" ? "New here? " : "Already have an account? "}
+          <a
+            href="#"
+            style={{ color: "#b85c68" }}
+            onClick={(e) => {
+              e.preventDefault();
+              switchMode(mode === "login" ? "register" : "login");
+            }}
+          >
+            {mode === "login" ? "Create an account" : "Log in"}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -210,3 +210,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f8d9d4, #f1c3c0); padding: 16px; }
 .login-box { background: #fff; border-radius: 14px; padding: 30px; width: 100%; max-width: 380px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+.auth-tabs { display: flex; border-bottom: 1px solid #eadbd8; }
+.auth-tabs button { flex: 1; background: none; border: none; padding: 10px; font-size: 14px; letter-spacing: 1px; color: #999; border-bottom: 2px solid transparent; }
+.auth-tabs button.on { color: var(--rose); border-bottom-color: var(--rose); }
