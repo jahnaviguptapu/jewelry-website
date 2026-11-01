@@ -2,12 +2,13 @@ const express = require("express");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const adminOnly = require("../middleware/auth");
+const { loggedIn } = adminOnly;
 
 const router = express.Router();
 
-// Customer order pettadam (login avasaram ledu)
+// Logged-in customer order pettadam
 // Price server lo product nundi teesukuntundi (customer marchalenu)
-router.post("/", async (req, res) => {
+router.post("/", loggedIn, async (req, res) => {
   try {
     const { customerName, phone, address, items } = req.body;
     if (!customerName || !phone || !address || !Array.isArray(items) || items.length === 0) {
@@ -43,8 +44,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Customer: phone number tho order status chudadam (address etc. ivvamu)
-router.get("/track", async (req, res) => {
+// Logged-in customer: phone number tho order status chudadam (address etc. ivvamu)
+router.get("/track", loggedIn, async (req, res) => {
   try {
     const phone = String(req.query.phone || "").trim();
     if (phone.length < 6) {

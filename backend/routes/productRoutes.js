@@ -1,14 +1,22 @@
 const express = require("express");
 const Product = require("../models/Product");
 const adminOnly = require("../middleware/auth");
+const { loggedIn } = adminOnly;
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", loggedIn, async (req, res) => {
   try {
     const filter = {};
     if (req.query.category) filter.category = req.query.category;
     if (req.query.sub) filter.subCategory = req.query.sub;
+    if (req.query.search) {
+      const q = String(req.query.search)
+        .trim()
+        .slice(0, 50)
+        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (q) filter.name = { $regex: q, $options: "i" };
+    }
     const products = await Product.find(filter).sort({ createdAt: -1 });
     res.json(products);
   } catch (err) {
@@ -16,7 +24,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", loggedIn, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });
