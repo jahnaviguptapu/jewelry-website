@@ -8,6 +8,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [term, setTerm] = useState("");
+  const isAdmin = !!localStorage.getItem("adminToken");
 
   const logout = () => {
     localStorage.removeItem("userToken");
@@ -73,6 +74,7 @@ function Navbar() {
             <NavLink to="/our-story">Our Story</NavLink>
             <NavLink to="/contact">Contact</NavLink>
             <NavLink to="/track">Track Order</NavLink>
+            {isAdmin && <NavLink to="/admin">Admin</NavLink>}
             {searchForm("mobile-search")}
             <button className="outline-btn mobile-logout" onClick={logout}>Logout</button>
           </nav>

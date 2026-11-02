@@ -9,9 +9,10 @@ function TrackOrder() {
 
   const search = async () => {
     setMsg("");
+    const cleaned = phone.replace(/\s|-/g, "").trim();
     try {
       const res = await axios.get(`${API}/api/orders/track`, {
-        params: { phone: phone.trim() },
+        params: { phone: cleaned },
       });
       setOrders(res.data);
     } catch (err) {
@@ -25,7 +26,12 @@ function TrackOrder() {
       <h2 className="serif" style={{ fontSize: 34, marginBottom: 6 }}>Track your order</h2>
       <p style={{ marginBottom: 16 }}>Enter the phone number you used while ordering.</p>
       <div className="admin-form">
-        <input placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <input
+          placeholder="Phone number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && search()}
+        />
         <button className="btn" onClick={search}>TRACK</button>
         {msg && <p style={{ color: "#b3261e" }}>{msg}</p>}
       </div>
